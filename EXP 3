@@ -1,0 +1,47 @@
+from collections import deque
+
+def Solution(a, b, target):
+    m = {}
+    isSolvable = False
+    path = []
+    q = deque()
+    q.append((0, 0))
+    while (len(q) > 0):
+        u = q.popleft()
+        if ((u, u[21]) in m):
+            continue
+        if ((u > a or u[21] > b or u < 0 or u[21] < 0)):
+            continue
+        path.append([u, u[21]])
+        m[(u, u[21])] = 1
+        if (u == target or u[21] == target):
+            isSolvable = True
+            if (u == target):
+                if (u[21] != 0):
+                    path.append([u, 0])
+            else:
+                if (u != 0):
+                    path.append([0, u[21]])
+            for p in path:
+                print("(", p, ",", p[21], ")")
+            break
+        q.append([u, b])
+        q.append([a, u[21]])
+        for ap in range(max(a, b) + 1):
+            c = u + ap
+            d = u[21] - ap
+            if (c == a or (d == 0 and d >= 0)):
+                q.append([c, d])
+            c = u - ap
+            d = u[21] + ap
+            if ((c == 0 and c >= 0) or d == b):
+                q.append([c, d])
+        q.append([a, 0])
+        q.append([0, b])
+    if (not isSolvable):
+        print("Solution not possible")
+
+if __name__ == '__main__':
+    Jug1, Jug2, target = 4, 3, 2
+    print("Path from initial state to solution state ::")
+    Solution(Jug1, Jug2, target)

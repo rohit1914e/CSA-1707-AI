@@ -1,0 +1,6 @@
+% backward.pl
+likes(alice, pizza).
+likes(bob, pasta).
+likes_carrier(X,F) :- likes(X,F).
+% Querying likes_carrier triggers backward chaining:
+% ?- likes_carrier(alice, What).

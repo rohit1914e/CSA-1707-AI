@@ -1,0 +1,45 @@
+# blog_generator.py
+
+html_code = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Blog - Demo</title> <!-- Title Tag -->
+    <meta charset="UTF-8">
+    <meta name="description" content="Demo Blog showing Anchor Tag, Title Tag, etc.">
+</head>
+<body style="font-family: Arial; margin: 30px;">
+
+    <h1>Welcome to My Blog</h1> <!-- H1 Tag -->
+    <p>This is a demo blog page created to demonstrate HTML tags.</p>
+
+    <h2>🌐 Anchor Tag Example</h2>
+    <p>
+        Visit <a href="https://wordpress.com" target="_blank">WordPress</a> 
+        to create your own blog.
+    </p>
+
+    <h2>🖼️ Image Example</h2>
+    <p>Here is a sample image:</p>
+    <img src="https://via.placeholder.com/250" alt="Sample Image">
+
+    <h2>📌 Conclusion</h2>
+    <p>
+        In this page we used:
+        <ul>
+            <li><strong>Title Tag</strong></li>
+            <li><strong>Anchor Tag</strong></li>
+            <li><strong>Heading Tags</strong></li>
+            <li><strong>Image Tag</strong></li>
+        </ul>
+    </p>
+
+</body>
+</html>
+"""
+
+# Save HTML to a file
+with open("blog.html", "w", encoding="utf-8") as file:
+    file.write(html_code)
+
+print("✅ Blog page created successfully! Open 'blog.html' in your browser.")

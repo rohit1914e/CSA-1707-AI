@@ -1,0 +1,4 @@
+% pattern.pl
+match_prefix([H|T],H,T).
+match_suffix(List, Last, Init) :- append(Init,[Last],List).
+% Query: ?- match_prefix([1,2,3],X,R).

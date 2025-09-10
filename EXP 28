@@ -1,0 +1,6 @@
+% diagnosis.pl
+symptom(fever).
+symptom(cough).
+disease(flu) :- symptom(fever), symptom(cough).
+disease(cold) :- symptom(cough), not(symptom(fever)).
+% Use assert/retract or pass symptoms as facts then query disease(X).

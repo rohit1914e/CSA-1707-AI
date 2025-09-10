@@ -1,0 +1,38 @@
+# decision_tree_id3.py
+import math
+from collections import Counter
+
+def entropy(rows):
+    counts = Counter(r[-1] for r in rows)
+    total = len(rows)
+    return -sum((c/total)*math.log2(c/total) for c in counts.values())
+
+def info_gain(left,right,cur_entropy):
+    p=len(left)/(len(left)+len(right))
+    return cur_entropy - p*entropy(left) - (1-p)*entropy(right)
+
+def id3(rows, attributes):
+    labels = [r[-1] for r in rows]
+    if len(set(labels))==1: return labels[0]
+    if not attributes: return Counter(labels).most_common(1)[0][0]
+    cur_entropy = entropy(rows)
+    best_gain, best_attr, best_splits = 0, None, None
+    for attr in attributes:
+        values = set(r[attr] for r in rows)
+        for val in values:
+            left = [r for r in rows if r[attr]==val]
+            right = [r for r in rows if r[attr]!=val]
+            gain = info_gain(left,right,cur_entropy)
+            if gain>best_gain:
+                best_gain, best_attr, best_splits = gain, (attr,val), (left,right)
+    if best_attr is None: return Counter(labels).most_common(1)[0][0]
+    attr,val = best_attr
+    remaining = [a for a in attributes if a!=attr]
+    return {(attr,val): (id3(best_splits[0], remaining), id3(best_splits[1], remaining))}
+
+# tiny example: [outlook,temp,play?]
+rows = [
+    ('Sunny','Hot','No'),('Sunny','Hot','No'),('Overcast','Hot','Yes'),
+    ('Rain','Mild','Yes')
+]
+print(id3(rows, [0,1]))

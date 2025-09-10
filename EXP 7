@@ -1,0 +1,35 @@
+# vacuum.py
+from collections import deque
+
+# grid: 0=clean,1=dirty; agent position (r,c)
+start = ((0,0), ((1,0),(0,1)))  # example dirty cells
+def is_goal(state):
+    pos, dirt = state
+    return len(dirt)==0
+
+def neighbors(state):
+    pos, dirt = state
+    r,c=pos
+    # actions: up,down,left,right,suck
+    for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nr,nc=r+dr,c+dc
+        if 0<=nr<2 and 0<=nc<2:
+            yield ((nr,nc), dirt)
+    # suck
+    if pos in dirt:
+        nd=tuple(x for x in dirt if x!=pos)
+        yield (pos, nd)
+
+def bfs(start):
+    q=deque([start]); parent={start:None}
+    while q:
+        s=q.popleft()
+        if is_goal(s):
+            path=[]
+            while s: path.append(s); s=parent[s]
+            return path[::-1]
+        for n in neighbors(s):
+            if n not in parent:
+                parent[n]=s; q.append(n)
+
+print(bfs(start))

@@ -1,0 +1,37 @@
+# missionaries_cannibals.py
+from collections import deque
+
+def valid(state):
+    mL, cL, boat = state
+    mR, cR = 3-mL, 3-cL
+    return 0<=mL<=3 and 0<=cL<=3 and (mL==0 or mL>=cL) and (mR==0 or mR>=cR)
+
+def neighbors(state):
+    mL, cL, boat = state
+    moves = [(1,0),(2,0),(0,1),(0,2),(1,1)]
+    for dm, dc in moves:
+        if boat==0:
+            ns = (mL-dm, cL-dc, 1)
+        else:
+            ns = (mL+dm, cL+dc, 0)
+        if valid(ns):
+            yield ns
+
+def bfs():
+    start=(3,3,0)
+    goal=(0,0,1)
+    q=deque([start])
+    parent={start:None}
+    while q:
+        s=q.popleft()
+        if s==goal:
+            path=[]
+            while s:
+                path.append(s); s=parent[s]
+            return path[::-1]
+        for n in neighbors(s):
+            if n not in parent:
+                parent[n]=s; q.append(n)
+
+path=bfs()
+for p in path: print(p)

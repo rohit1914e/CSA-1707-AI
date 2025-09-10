@@ -1,0 +1,39 @@
+# simple_nn.py
+import random,math
+def sigmoid(x): return 1/(1+math.exp(-x))
+def dsig(x): return x*(1-x)
+
+# network: 2 inputs, 2 hidden, 1 output
+weights_ih = [[random.uniform(-1,1) for _ in range(2)] for _ in range(2)]
+weights_ho = [random.uniform(-1,1) for _ in range(2)]
+bias_h = [random.uniform(-1,1) for _ in range(2)]
+bias_o = random.uniform(-1,1)
+lr=0.5
+
+# XOR dataset
+data = [([0,0],0),([0,1],1),([1,0],1),([1,1],0)]
+
+for epoch in range(10000):
+    for x,y in data:
+        # forward
+        hidden = [sigmoid(sum(x[i]*weights_ih[j][i] for i in range(2))+bias_h[j]) for j in range(2)]
+        out = sigmoid(sum(hidden[i]*weights_ho[i] for i in range(2))+bias_o)
+        # backprop
+        error = y - out
+        d_out = error * dsig(out)
+        # update output weights
+        for i in range(2):
+            weights_ho[i] += lr * d_out * hidden[i]
+        bias_o += lr * d_out
+        # hidden layer
+        for j in range(2):
+            d_hidden = dsig(hidden[j]) * d_out * weights_ho[j]
+            for i in range(2):
+                weights_ih[j][i] += lr * d_hidden * x[i]
+            bias_h[j] += lr * d_hidden
+
+# test
+for x,y in data:
+    hidden = [sigmoid(sum(x[i]*weights_ih[j][i] for i in range(2))+bias_h[j]) for j in range(2)]
+    out = sigmoid(sum(hidden[i]*weights_ho[i] for i in range(2))+bias_o)
+    print(x, out)

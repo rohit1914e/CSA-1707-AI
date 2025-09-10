@@ -1,0 +1,28 @@
+# astar.py
+import heapq
+def astar(start, goal, grid):
+    rows,cols=len(grid),len(grid[0])
+    def h(a,b): return abs(a[0]-b[0])+abs(a[1]-b[1])
+    open_heap=[(h(start,goal),0,start,None)]
+    came, gscore = {}, {start:0}
+    while open_heap:
+        f, g, current, parent = heapq.heappop(open_heap)
+        if current in came: continue
+        came[current]=parent
+        if current==goal:
+            path=[]
+            cur=current
+            while cur:
+                path.append(cur); cur=came[cur]
+            return path[::-1]
+        for dr,dc in [(1,0),(-1,0),(0,1),(0,-1)]:
+            nr, nc = current[0]+dr, current[1]+dc
+            if 0<=nr<rows and 0<=nc<cols and grid[nr][nc]==0:
+                tentative = g + 1
+                if tentative < gscore.get((nr,nc), 1e9):
+                    gscore[(nr,nc)] = tentative
+                    heapq.heappush(open_heap, (tentative + h((nr,nc),goal), tentative, (nr,nc), current))
+    return None
+
+grid = [[0,0,0],[1,1,0],[0,0,0]]
+print(astar((0,0),(2,2),grid))

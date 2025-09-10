@@ -1,0 +1,5 @@
+% people.pl
+person(john, date(1990,5,12)).
+person(mary, date(1995,8,3)).
+% Query examples:
+% ?- person(Name, date(Y,M,D)).

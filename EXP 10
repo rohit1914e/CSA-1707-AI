@@ -1,0 +1,20 @@
+# map_coloring.py
+def color_map(graph, colors):
+    nodes = list(graph.keys())
+    assignment = {}
+    def valid(node, c):
+        return all(assignment.get(nb)!=c for nb in graph[node])
+    def backtrack(i=0):
+        if i==len(nodes): return assignment.copy()
+        node = nodes[i]
+        for c in colors:
+            if valid(node,c):
+                assignment[node]=c
+                sol = backtrack(i+1)
+                if sol: return sol
+                del assignment[node]
+        return None
+    return backtrack()
+
+g = {'A':['B','C'],'B':['A','C'],'C':['A','B']}
+print(color_map(g, ['Red','Green','Blue']))

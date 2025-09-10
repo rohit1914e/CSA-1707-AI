@@ -1,0 +1,6 @@
+% forward.pl
+fact(a).
+fact(b).
+rule(c) :- fact(a), fact(b).
+infer(X) :- rule(X).
+% Query: ?- infer(c).

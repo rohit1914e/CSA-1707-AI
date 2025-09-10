@@ -1,0 +1,8 @@
+% stsu.pl
+student(s1, 'Alice').
+student(s2, 'Bob').
+teacher(t1, 'DrSmith').
+teaches(t1, 'CS101').
+enrolled(s1, 'CS101').
+% Queries:
+% ?- teacher(T,Name), teaches(T,Code), enrolled(S,Code).
